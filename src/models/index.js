@@ -1,4 +1,4 @@
-const { Sequelize } = require('sequelize');
+const { Sequelize, DataTypes } = require('sequelize');
 
 const sequelize = new Sequelize(
   process.env.DB_NAME,
@@ -11,4 +11,18 @@ const sequelize = new Sequelize(
   }
 );
 
-module.exports = { sequelize };
+// Import modeli
+const User = require('./User')(sequelize, DataTypes);
+const CVE = require('./CVE')(sequelize, DataTypes);
+const Language = require('./Language')(sequelize, DataTypes);
+const Product = require('./Product')(sequelize, DataTypes);
+const Vendor = require('./Vendor')(sequelize, DataTypes);
+
+module.exports = {
+  sequelize,
+  User,
+  CVE,
+  Language,
+  Product,
+  Vendor,
+};
