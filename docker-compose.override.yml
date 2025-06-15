@@ -1,0 +1,14 @@
+services:
+  db:
+    container_name: is-proj-db
+    ports:
+      - 3306:3306
+    volumes:
+      - is-proj-db-volume:/var/lib/mysql
+      - ./datasets/sql:/docker-entrypoint-initdb.d/:ro
+
+secrets:
+  db_root_pass_file:
+    file: ./secrets/db_root_pass
+volumes:
+  is-proj-db-volume:

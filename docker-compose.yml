@@ -1,0 +1,10 @@
+services:
+  db:
+    image: mysql@sha256:072f96c2f1ebb13f712fd88d0ef98f2ef9a52ad4163ae67b550ed6720b6d642e
+    expose:
+      - 3306:3306
+    restart: unless-stopped
+    environment:
+      - MYSQL_ROOT_PASSWORD_FILE=/run/secrets/db_root_pass_file
+    secrets:
+      - db_root_pass_file
