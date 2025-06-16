@@ -4,6 +4,7 @@ import List from './pages/List'
 import Form from './pages/Form'
 import Admin from './pages/Admin'
 import Header from './components/Header'
+import Chart from './pages/Chart'; 
 
 function App() {
   return (
@@ -11,6 +12,7 @@ function App() {
       <Header />
       <div className="p-6">
         <Routes>
+          <Route path="/chart" element={<Chart />} />
           <Route path="/" element={<Home />} />
           <Route path="/list" element={<List />} />
           <Route path="/form" element={<Form />} />

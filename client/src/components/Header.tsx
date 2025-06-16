@@ -5,6 +5,7 @@ const Header = () => (
     <Link to="/" className="hover:underline">🏠 Home</Link>
     <Link to="/list" className="hover:underline">📄 Lista</Link>
     <Link to="/form" className="hover:underline">➕ Formularz</Link>
+    <Link to="/chart">📈 Wykres</Link>
     <Link to="/admin" className="hover:underline">🛠 Panel admina</Link>
   </header>
 )
