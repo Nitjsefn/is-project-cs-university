@@ -11,8 +11,12 @@ const { sequelize } = require('./models');
 const authRoutes = require('./routes/authRoutes');
 const languageRoutes = require('./routes/languageRoutes');
 const cveRoutes = require('./routes/cveRoutes');
-const soapService = require('./services/soapService');
 
+//const soapCveService = require('./services/soapCveService');
+
+const soapExportService = require('./services/soapExportService');
+
+//const soapLangService = require('./services/soapLangService');
 
 
 
@@ -37,7 +41,9 @@ app.use('/api/v1/languages', languageRoutes);
 app.use('/api/v1/vulnerabilities', cveRoutes);
 
 // SOAP endpoint
-soapService(app);
+//soapCveService(app);
+soapExportService(app);
+//soapLangService(app);
 
 // server start
 sequelize.authenticate()
