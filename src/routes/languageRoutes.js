@@ -1,8 +1,10 @@
 const express = require('express');
-const { listLanguages, getLanguage } = require('../controllers/languageController');
 const router = express.Router();
+const languageController = require('../controllers/languageController');
 
-router.get('/', listLanguages);
-router.get('/:id', getLanguage);
+
+router.get('/id/:id', languageController.getLanguage);
+router.get('/:limit', languageController.listLimitedLanguages); 
+router.get('/', languageController.listLanguages);
 
 module.exports = router;

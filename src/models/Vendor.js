@@ -1,7 +1,16 @@
 module.exports = (sequelize, DataTypes) => {
-  return sequelize.define('Vendor', {
-    id: { type: DataTypes.INTEGER, autoIncrement: true, primaryKey: true },
-    cve_id: DataTypes.STRING,
-    vendor: DataTypes.STRING
-  }, { timestamps: false, tableName: 'Vendors' });
+  return sequelize.define('Product', {
+    cve_id: {
+      type: DataTypes.STRING,
+      primaryKey: true,    
+    },
+    vulnerable_product: {
+      type: DataTypes.STRING,
+    }
+  }, {
+    tableName: 'Products',
+    timestamps: false,
+    id: false 
+  });
 };
+

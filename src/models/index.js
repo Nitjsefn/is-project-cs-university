@@ -11,18 +11,14 @@ const sequelize = new Sequelize(
   }
 );
 
-// Import modeli
-const User = require('./User')(sequelize, DataTypes);
-const CVE = require('./CVE')(sequelize, DataTypes);
-const Language = require('./Language')(sequelize, DataTypes);
-const Product = require('./Product')(sequelize, DataTypes);
-const Vendor = require('./Vendor')(sequelize, DataTypes);
+const User     = require('./User')(sequelize, DataTypes);
+const CVE      = require('./CVE')(sequelize, DataTypes);
+const LangPopularity = require('./LangPopularity')(sequelize, DataTypes);
 
 module.exports = {
   sequelize,
   User,
   CVE,
-  Language,
-  Product,
-  Vendor,
+  LangPopularity
 };
+
