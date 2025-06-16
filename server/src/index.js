@@ -1,3 +1,4 @@
+const cors = require("cors");
 require('dotenv').config();
 const fs = require('fs');
 
@@ -26,6 +27,7 @@ const authenticate = require('./middlewares/authenticate');
 
 
 const app = express();
+app.use(cors())
 app.use(express.json());
 
 // Public route
