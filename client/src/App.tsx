@@ -12,7 +12,7 @@ function App() {
     const [token, setToken] = useState("");
 
     return (
-        <div className="min-h-screen bg-gray-100">
+        <div className="min-h-screen bg-gray-100 w-full m-auto">
             <Header setToken={setToken}/>
             <div className="p-6">
                 <Routes>
