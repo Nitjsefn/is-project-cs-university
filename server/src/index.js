@@ -17,6 +17,7 @@ const cveRoutes = require('./routes/cveRoutes');
 const soapExportService = require('./services/soapExportService');
 
 //const soapLangService = require('./services/soapLangService');
+//const soapService = require('./services/soapService');
 
 
 
@@ -44,6 +45,7 @@ app.use('/api/v1/vulnerabilities', cveRoutes);
 //soapCveService(app);
 soapExportService(app);
 //soapLangService(app);
+//soapService(app);
 
 // server start
 sequelize.authenticate()
