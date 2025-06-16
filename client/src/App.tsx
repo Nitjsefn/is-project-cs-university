@@ -6,9 +6,11 @@ import { useState } from 'react'
 import Register from './pages/Register';
 import Home from './pages/Home';
 import Overview from './pages/Overview';
+import Chart from './pages/Chart';
 
 function App() {
     //const ctx = useState(new Context)[0];
+
     const [token, setToken] = useState("");
 
     return (
@@ -17,13 +19,15 @@ function App() {
             <div className="p-6">
                 <Routes>
                     <Route path="/" element={<Home />} />
-                    <Route path="/login" element={<Login setToken={setToken}/>} />
-                    <Route path="/register" element={<Register setToken={setToken}/>} />
-                    <Route path="/overview" element={<Overview token={token}/>} />
+                    <Route path="/login" element={<Login setToken={setToken} />} />
+                    <Route path="/register" element={<Register setToken={setToken} />} />
+                    <Route path="/overview" element={<Overview token={token} />} />
+                    <Route path="/chart" element={<Chart />} />
+
                 </Routes>
             </div>
         </div>
-    )
+    );
 }
 
-export default App
+export default App;
