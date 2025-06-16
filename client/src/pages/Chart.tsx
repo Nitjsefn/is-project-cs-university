@@ -2,74 +2,132 @@ import React, { useEffect, useState } from 'react';
 import { LineChart } from '@mui/x-charts/LineChart';
 import { CircularProgress, Box, Typography } from '@mui/material';
 
-interface LanguageItem {
-  month: string;
-  popularity: number;
+interface ChartProps {
+  token: string;
+  language: string;
+  startDate: string;
+  endDate:   string;
 }
 
-interface VulnerabilityItem {
-  month: string;
-  count: number;
+interface LangRow {
+  Date: string;
+  [lang: string]: any;
+}
+
+interface CVEEntry {
+  pub_date: string;
 }
 
 const API_BASE = 'http://localhost:3000/api/v1';
 
-const CveLanguagesChart: React.FC = () => {
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-  const [xLabels, setXLabels] = useState<string[]>([]);
-  const [popularityY, setPopularityY] = useState<number[]>([]);
-  const [vulnerabilitiesY, setVulnerabilitiesY] = useState<number[]>([]);
+const Chart: React.FC<ChartProps> = ({ token, language, startDate, endDate }) => {
+  const [loading, setLoading]       = useState(true);
+  const [error, setError]           = useState<string | null>(null);
+  const [months, setMonths]         = useState<string[]>([]);
+  const [popularityValues, setPopularityValues] = useState<number[]>([]);
+  const [cveCounts, setCveCounts]   = useState<number[]>([]);
 
   useEffect(() => {
+    if (!token) {
+      setError('Access denied');
+      setLoading(false);
+      return;
+    }
+
     async function fetchData() {
       try {
+        const headers = { Authorization: `Bearer ${token}` };
         const [langRes, vulnRes] = await Promise.all([
-          fetch(`${API_BASE}/languages`),
-          fetch(`${API_BASE}/vulnerabilities`)
+          fetch(`${API_BASE}/languages`,      { headers }),
+          fetch(`${API_BASE}/vulnerabilities`,{ headers }),
         ]);
-        if (!langRes.ok || !vulnRes.ok) throw new Error('Błąd pobierania danych');
+        if (!langRes.ok || !vulnRes.ok) {
+          throw new Error(`Downloading error: ${langRes.status}/${vulnRes.status}`);
+        }
 
-        const langs: LanguageItem[] = await langRes.json();
-        const vulns: VulnerabilityItem[] = await vulnRes.json();
+        const langs: LangRow[]  = await langRes.json();
+        const vulns: CVEEntry[] = await vulnRes.json();
 
-        // Zakładamy, że miesiące są te same i w tej samej kolejności
-        const months = langs.map(item => item.month);
-        const popValues = langs.map(item => item.popularity);
-        const vulnValues = vulns.map(item => item.count);
+        const filteredLangs = langs.filter(r => {
+          const m = r.Date.slice(0, 7);
+          return m >= startDate && m <= endDate;
+        });
 
-        setXLabels(months);
-        setPopularityY(popValues);
-        setVulnerabilitiesY(vulnValues);
+        const monthLabels = filteredLangs.map(r => r.Date.slice(0, 7));
+        setMonths(monthLabels);
+
+        const popularityArr = filteredLangs.map(r => Number(r[language] ?? 0));
+        setPopularityValues(popularityArr);
+
+        const vulnsInRange = vulns.filter(v => {
+          const m = v.pub_date.slice(0, 7);
+          return m >= startDate && m <= endDate;
+        });
+
+        const countsByMonth = vulnsInRange.reduce((acc, v) => {
+          const m = v.pub_date.slice(0, 7);
+          acc[m] = (acc[m] || 0) + 1;
+          return acc;
+        }, {} as Record<string, number>);
+
+        const cveArr = monthLabels.map(m => countsByMonth[m] || 0);
+        setCveCounts(cveArr);
+
         setLoading(false);
-      } catch (err: any) {
-        setError(err.message);
+      } catch (e: any) {
+        setError(e.message);
         setLoading(false);
       }
     }
-    fetchData();
-  }, []);
 
-  if (loading) return <Box sx={{ textAlign: 'center', mt: 4 }}><CircularProgress /></Box>;
-  if (error) return <Typography color="error" align="center">{error}</Typography>;
+    fetchData();
+  }, [token, language, startDate, endDate]);
+
+
+  if (loading) return (
+    <Box sx={{ textAlign: 'center', mt: 4 }}>
+      <CircularProgress />
+    </Box>
+  );
+  if (error) return (
+    <Typography color="error" align="center" sx={{ mt: 4 }}>
+      {error}
+    </Typography>
+  );
 
   return (
     <Box sx={{ maxWidth: 800, mx: 'auto', mt: 4 }}>
-      <Typography variant="h5" mb={2} align="center">
-        Popularność języków vs. Liczba CVE w miesiącach
+      <Typography variant="h5" align="center" mb={2}>
+        Popularność {language} vs. Liczba CVE ({startDate}–{endDate})
       </Typography>
       <LineChart
-        xAxis={[{ scaleType: 'band', data: xLabels, label: 'Miesiąc' }]}
-        series={[
-          { label: 'Popularność języków', data: popularityY },
-          { label: 'Liczba CVE', data: vulnerabilitiesY }
+        xAxis={[{ scaleType: 'band', data: months, label: 'Month' }]}
+        yAxis={[
+          { id: 'cve', position: 'left',  label: 'CVE Count',       min: 0 }
+        
         ]}
-        height={400}
-        width={800}
-      />
+     
+  series={[
+    {
+      label: `Popularity of ${language}`,
+      data: popularityValues.map(v => v * 50),
+      yAxisKey: 'pop',
+      valueFormatter: value => {const original = value / 50;return `${original.toFixed(1)}`;}
+    },
+    {
+      label: 'CVE Count',
+      data: cveCounts,
+      yAxisKey: 'cve'
+    }
+  ]}
+  height={400}
+  width={800}
+/>
+
+
     </Box>
   );
 };
 
-export default CveLanguagesChart;
+export default Chart;
 

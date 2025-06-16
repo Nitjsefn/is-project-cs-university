@@ -13,6 +13,14 @@ function App() {
 
     const [token, setToken] = useState("");
 
+<<<<<<< master
+  const [language, setLanguage]   = useState("");
+  const [startDate, setStartDate] = useState("");
+  const [endDate,   setEndDate]  = useState("");
+
+    return (
+        <div className="min-h-screen bg-gray-100">
+=======
     useEffect(() => {
         const t = localStorage.getItem("jwt");
         if(t != null)
@@ -23,6 +31,7 @@ function App() {
         setToken(token);
         localStorage.setItem("jwt", token);
     }
+>>>>>>> master
 
     return (
         <div className="min-h-screen bg-gray-100 w-full m-auto">
@@ -33,6 +42,11 @@ function App() {
                     <Route path="/login" element={<Login setToken={changeToken} />} />
                     <Route path="/register" element={<Register setToken={changeToken} />} />
                     <Route path="/overview" element={<Overview token={token} />} />
+<<<<<<< master
+		    <Route path="/chart" element={<Chart token={token} language={language} startDate={startDate} endDate={endDate} />}/>
+
+=======
+>>>>>>> master
                 </Routes>
             </div>
         </div>
