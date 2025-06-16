@@ -12,22 +12,26 @@ import { Link } from 'react-router-dom'
 const Header = (props: {setToken: (t: string)=>void}) => (
   <header className="bg-blue-700 text-white px-6 py-4 flex gap-6 text-lg font-medium w-full items-center">
     <Link to="/" className="hover:underline">
-        <div>
+        <div className="px-6">
             🏠 Home
         </div>
     </Link>
-    <Link to="/Overview" className="hover:underline">
-        <div>
+    <Link to="/overview" className="hover:underline">
+        <div className="px-6">
             📄 Overview
         </div>
     </Link>
     <Link to="/login" className="hover:underline">
-        ➕ Login
+        <div className="px-6">
+            ➕ Login
+        </div>
     </Link>
     <Link to="/register" className="hover:underline">
-        ➕ Register
+        <div className="px-6">
+            ➕ Register
+        </div>
     </Link>
-    <a className="hover:underline"><div onClick={() => props.setToken("")}>Log Out</div></a>
+    <a className="hover:underline inline-block px-6"><div onClick={() => props.setToken("")}>Log Out</div></a>
   </header>
 )
 

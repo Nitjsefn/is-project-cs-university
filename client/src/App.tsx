@@ -1,7 +1,7 @@
 import { Routes, Route } from 'react-router-dom'
 import Header from './components/Header'
 import Login from './pages/Login'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 //import Context from './support/Context';
 import Register from './pages/Register';
 import Home from './pages/Home';
@@ -13,17 +13,26 @@ function App() {
 
     const [token, setToken] = useState("");
 
+    useEffect(() => {
+        const t = localStorage.getItem("jwt");
+        if(t != null)
+            setToken(t);
+    }, [token]);
+
+    const changeToken = (token: string) => {
+        setToken(token);
+        localStorage.setItem("jwt", token);
+    }
+
     return (
         <div className="min-h-screen bg-gray-100 w-full m-auto">
-            <Header setToken={setToken}/>
+            <Header setToken={changeToken}/>
             <div className="p-6">
                 <Routes>
                     <Route path="/" element={<Home />} />
-                    <Route path="/login" element={<Login setToken={setToken} />} />
-                    <Route path="/register" element={<Register setToken={setToken} />} />
+                    <Route path="/login" element={<Login setToken={changeToken} />} />
+                    <Route path="/register" element={<Register setToken={changeToken} />} />
                     <Route path="/overview" element={<Overview token={token} />} />
-                    <Route path="/chart" element={<Chart />} />
-
                 </Routes>
             </div>
         </div>

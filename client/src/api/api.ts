@@ -19,3 +19,13 @@ export function registerReq(data: {username: string, password: string}) {
     const res = API.post("/api/v1/auth/register", data);
     return res;
 }
+
+export function getLangs() {
+    const res = API.get("api/v1/languages/");
+    return res;
+}
+
+export function getCves() {
+    const res = API.get("api/v1/vulnerabilities/");
+    return res;
+}
