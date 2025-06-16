@@ -1,24 +1,28 @@
 import { Routes, Route } from 'react-router-dom'
-import Home from './pages/Home'
-import List from './pages/List'
-import Form from './pages/Form'
-import Admin from './pages/Admin'
 import Header from './components/Header'
+import Login from './pages/Login'
+import { useState } from 'react'
+import Context from './support/Context';
+import Register from './pages/Register';
+import Home from './pages/Home';
 
 function App() {
-  return (
-    <div className="min-h-screen bg-gray-100">
-      <Header />
-      <div className="p-6">
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/list" element={<List />} />
-          <Route path="/form" element={<Form />} />
-          <Route path="/admin" element={<Admin />} />
-        </Routes>
-      </div>
-    </div>
-  )
+    const ctx = useState(new Context)[0];
+
+    return (
+        <div className="min-h-screen bg-gray-100">
+            <Header />
+            <div className="p-6">
+                <Routes>
+                    <Route path="/" element={<Home />} />
+                    <Route path="/login" element={<Login ctx={ctx}/>} />
+                    <Route path="/register" element={<Register ctx={ctx}/>} />
+                    <Route path="/overview" element={null} />
+                </Routes>
+            </div>
+            {ctx.tokenExists().toString()}
+        </div>
+    )
 }
 
 export default App
