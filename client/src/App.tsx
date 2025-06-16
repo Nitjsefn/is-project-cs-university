@@ -13,6 +13,10 @@ function App() {
 
     const [token, setToken] = useState("");
 
+  const [language, setLanguage]   = useState("");
+  const [startDate, setStartDate] = useState("");
+  const [endDate,   setEndDate]  = useState("");
+
     return (
         <div className="min-h-screen bg-gray-100">
 
@@ -23,7 +27,7 @@ function App() {
                     <Route path="/login" element={<Login setToken={setToken} />} />
                     <Route path="/register" element={<Register setToken={setToken} />} />
                     <Route path="/overview" element={<Overview token={token} />} />
-                    <Route path="/chart" element={<Chart />} />
+		    <Route path="/chart" element={<Chart token={token} language={language} startDate={startDate} endDate={endDate} />}/>
 
                 </Routes>
             </div>
