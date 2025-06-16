@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions 
+    name="ExportService"
+    targetNamespace="http://example.com/export"
+    xmlns="http://schemas.xmlsoap.org/wsdl/"
+    xmlns:tns="http://example.com/export"
+    xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+
+  <message name="exportCVEsRequest">
+    <part name="limit" type="xsd:int"/>
+    <part name="format" type="xsd:string"/>
+  </message>
+
+  <message name="exportCVEsResponse">
+    <part name="data" type="xsd:string"/>
+  </message>
+
+  <portType name="ExportServicePortType">
+    <operation name="exportCVEs">
+      <input message="tns:exportCVEsRequest"/>
+      <output message="tns:exportCVEsResponse"/>
+    </operation>
+  </portType>
+
+  <binding name="ExportServiceBinding" type="tns:ExportServicePortType">
+    <soap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <operation name="exportCVEs">
+      <soap:operation soapAction="exportCVEs"/>
+      <input>
+        <soap:body use="literal"/>
+      </input>
+      <output>
+        <soap:body use="literal"/>
+      </output>
+    </operation>
+  </binding>
+
+  <service name="ExportService">
+    <port name="ExportServicePort" binding="tns:ExportServiceBinding">
+      <soap:address location="http://localhost:3000/api/v1/soap/export"/>
+    </port>
+  </service>
+
+</definitions>
+

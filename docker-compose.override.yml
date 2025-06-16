@@ -6,6 +6,13 @@ services:
     volumes:
       - is-proj-db-volume:/var/lib/mysql
       - ./datasets/sql:/docker-entrypoint-initdb.d/:ro
+  
+  phpmyadmin:
+    ports:
+      - "6002:80"
+    environment:
+      PMA_HOST: db
+
 
 secrets:
   db_root_pass_file:

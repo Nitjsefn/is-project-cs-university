@@ -4,7 +4,20 @@ services:
     expose:
       - 3306:3306
     restart: unless-stopped
+    networks:
+      - backend
     environment:
       - MYSQL_ROOT_PASSWORD_FILE=/run/secrets/db_root_pass_file
     secrets:
       - db_root_pass_file
+
+  phpmyadmin:
+    image: phpmyadmin:5
+    restart: always
+    networks:
+      - backend
+    depends_on:
+      - db
+
+networks:
+  backend:
