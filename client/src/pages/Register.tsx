@@ -3,7 +3,8 @@ import { loginReq, registerReq } from "../api/api"
 import { useState } from "react";
 import type Context from "../support/Context";
 
-export default function Register(props: {ctx: Context}) {
+//export default function Register(props: {ctx: Context}) {
+export default function Register(props: {setToken: (t: string) => void}) {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [errEn, setErrEn] = useState(false);
@@ -15,7 +16,7 @@ export default function Register(props: {ctx: Context}) {
             let res = await registerReq({username: username, password: password});
             if(res.status == 200) {
                 res = await loginReq({username: username, password: password});
-                props.ctx.setAuthToken(res.data.token);
+                props.setToken(res.data.token);
                 if(res.status == 200) {
                     redirect("/overview");
                     return;

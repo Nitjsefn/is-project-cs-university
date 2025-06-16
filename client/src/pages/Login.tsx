@@ -1,9 +1,10 @@
 import { redirect } from "react-router-dom"
 import { loginReq } from "../api/api"
 import { useState } from "react";
-import type Context from "../support/Context";
+//import type Context from "../support/Context";
 
-export default function Login(props: {ctx: Context}) {
+//export default function Login(props: {ctx: Context}) {
+export default function Login(props: {setToken: (t: string) => void}) {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [errEn, setErrEn] = useState(false);
@@ -13,15 +14,15 @@ export default function Login(props: {ctx: Context}) {
         setErrEn(false);
         try {
             const res = await loginReq({username: username, password: password});
-            console.log("test");
             if(res.status == 200) {
-                props.ctx.setAuthToken(res.data.token);
+                props.setToken(res.data.token);
                 redirect("/overview");
                 return;
             }
             setErrEn(true);
         }
-        catch {
+        catch (e){
+            console.log(e);
             alert("Cannot connect to the server");
         }
     }

@@ -11,11 +11,11 @@ export const deleteZgloszenie = async (id: number) =>
   API.delete(`/zgloszenia/${id}`);
 
 export function loginReq(data: {username: string, password: string}) {
-    const res = API.post("/login", data);
+    const res = API.post("/api/v1/auth/login", data);
     return res;
 }
 
 export function registerReq(data: {username: string, password: string}) {
-    const res = API.post("/register", data);
+    const res = API.post("/api/v1/auth/register", data);
     return res;
 }
