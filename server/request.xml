@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:exp="http://example.com/export">
+  <soapenv:Header/>
+  <soapenv:Body>
+    <exp:exportCVEs>
+      <limit>3</limit>
+      <format>yaml</format>
+    </exp:exportCVEs>
+  </soapenv:Body>
+</soapenv:Envelope>
