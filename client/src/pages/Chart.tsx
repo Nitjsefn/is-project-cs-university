@@ -27,12 +27,18 @@ const Chart: React.FC<ChartProps> = ({ token, language, startDate, endDate }) =>
   const [popularityValues, setPopularityValues] = useState<number[]>([]);
   const [cveCounts, setCveCounts]   = useState<number[]>([]);
 
+        const startD = startDate.slice(0,7);
+    	const endD   = endDate.slice(0,7);
   useEffect(() => {
     if (!token) {
       setError('Access denied');
       setLoading(false);
       return;
     }
+
+
+
+
 
     async function fetchData() {
       try {
@@ -50,7 +56,7 @@ const Chart: React.FC<ChartProps> = ({ token, language, startDate, endDate }) =>
 
         const filteredLangs = langs.filter(r => {
           const m = r.Date.slice(0, 7);
-          return m >= startDate && m <= endDate;
+          return m >= startD && m <= endD;
         });
 
         const monthLabels = filteredLangs.map(r => r.Date.slice(0, 7));
@@ -61,7 +67,7 @@ const Chart: React.FC<ChartProps> = ({ token, language, startDate, endDate }) =>
 
         const vulnsInRange = vulns.filter(v => {
           const m = v.pub_date.slice(0, 7);
-          return m >= startDate && m <= endDate;
+          return m >= startD && m <= endD;
         });
 
         const countsByMonth = vulnsInRange.reduce((acc, v) => {
@@ -81,7 +87,7 @@ const Chart: React.FC<ChartProps> = ({ token, language, startDate, endDate }) =>
     }
 
     fetchData();
-  }, [token, language, startDate, endDate]);
+  }, [token, language, startD, endD]);
 
 
   if (loading) return (
@@ -98,7 +104,7 @@ const Chart: React.FC<ChartProps> = ({ token, language, startDate, endDate }) =>
   return (
     <Box sx={{ maxWidth: 800, mx: 'auto', mt: 4 }}>
       <Typography variant="h5" align="center" mb={2}>
-        Popularność {language} vs. Liczba CVE ({startDate}–{endDate})
+        Popularność {language} vs. Liczba CVE ({startD}–{endD})
       </Typography>
       <LineChart
         xAxis={[{ scaleType: 'band', data: months, label: 'Month' }]}
