@@ -19,5 +19,26 @@ services:
     depends_on:
       - db
 
+  front:
+    build:
+      dockerfile: dockerfile
+      context: ./client/
+    restart: unless-stopped
+    depends_on:
+      - back
+
+  back:
+    build:
+      dockerfile: dockerfile
+      context: ./server/
+    restart: unless-stopped
+    secrets:
+      - jwt_secret
+      - db_root_pass_file
+    networks:
+      - backend
+    depends_on:
+      - db
+
 networks:
   backend:

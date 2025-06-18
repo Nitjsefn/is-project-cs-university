@@ -13,9 +13,19 @@ services:
     environment:
       PMA_HOST: db
 
+  front:
+    ports:
+      - 5173:5173
+
+  back:
+    ports:
+      - 3000:3000
+
 
 secrets:
   db_root_pass_file:
     file: ./secrets/db_root_pass
+  jwt_secret:
+    file: ./secrets/jwt_secret
 volumes:
   is-proj-db-volume:
