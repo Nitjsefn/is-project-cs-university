@@ -8,6 +8,8 @@ export default function Overview(props: {token: string}) {
     const [endDate, setEndDate] = useState("");
     const [type, setType] = useState("yaml");
 
+    const [language, setLanguage] = useState("Java");
+
     const download = async () => {
         const headers = new Headers();
         //curl http://localhost:3000/api/v1/soap/export   -H "Content-Type: text/xml;charset=UTF-8"   -H "SOAPAction: exportCVEs"   -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwidXNlcm5hbWUiOiJ0ZXN0IiwiaWF0IjoxNzUwMDc3Mzc3LCJleHAiOjE3NTAwODA5Nzd9.eyEAtEJlOkUXAKOY49ADZiZYyQN1fAp5iSW0-2Uzk18"   -d @request.xml
@@ -61,10 +63,29 @@ export default function Overview(props: {token: string}) {
 
     return (
         <div>
-            <div>
-                <Chart startDate={Date.parse(startDate)} endDate={Date.parse(endDate)}/>
+            <div style={{background:"white", color: "black"}}>
+                <Chart startDate= {startDate} endDate={endDate} token={props.token}  language={language} />
             </div>
+
+
             <fieldset title="Chart">
+
+	            <label htmlFor="language">Language:</label>
+        <select
+          id="language"
+          value={language}
+          onChange={(e) => setLanguage(e.target.value)}
+        >
+          <option value="Java">Java</option>
+          <option value="Python">Python</option>
+          <option value="Lua">JavaScript</option>
+          <option value="JavaScript">C++</option>
+        </select>
+	<br/>
+
+
+
+
                 <legend>Chart</legend>
                 <label htmlFor="chart_start_date">Start:</label>
                 <input id="chart_start_date" type="date" value={startDate} onChange={(e) => setStartDate(e.target.value)} />
@@ -73,6 +94,8 @@ export default function Overview(props: {token: string}) {
                 <input id="chart_end_date" type="date" value={endDate} onChange={(e) => setEndDate(e.target.value)} />
                 <button onClick={() => show()}>Show</button>
             </fieldset>
+
+
             <fieldset title="Download" className="text-left">
                 <legend>Download</legend>
                 <RadioGroup>
